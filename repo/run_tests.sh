@@ -51,6 +51,7 @@ fi
 # ── Build-only path ───────────────────────────────────────────────────────
 if [[ "$BUILD_ONLY" -eq 1 ]]; then
     echo "[run_tests.sh] Building shelterops_lib and test binaries (no test execution)..."
+    docker compose build build
     docker compose run --rm build
     echo "[run_tests.sh] Build complete."
     exit 0
@@ -77,5 +78,6 @@ else
 fi
 
 echo "[run_tests.sh] Building and running ${LABEL_DESC} tests..."
+docker compose build test
 CTEST_EXTRA_ARGS="$CTEST_ARGS" docker compose run --rm test
 echo "[run_tests.sh] Tests passed (${LABEL_DESC})."
