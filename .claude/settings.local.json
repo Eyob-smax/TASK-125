@@ -1,0 +1,14 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(xargs ls *)",
+      "Bash(python3 *)",
+      "Bash(docker compose *)",
+      "Bash(docker info *)",
+      "Bash(docker context ls *)",
+      "Bash(docker context *)",
+      "Bash(\"C:\\\\Program Files\\\\Git\\\\usr\\\\bin\\\\bash.exe\" /c/Users/Hello/Desktop/TASK-125/repo/run_tests.sh)",
+      "Bash(\"C:\\\\Program Files\\\\Git\\\\usr\\\\bin\\\\bash.exe\" /c/Users/Hello/Desktop/TASK-125/repo/run_tests.sh --verbose)"
+    ]
+  }
+}

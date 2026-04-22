@@ -1,0 +1,25 @@
+{
+  "_comment": [
+    "trusted_publishers.json — Pinned Authenticode signer thumbprints.",
+    "UpdateManager reads this file (path set by AppConfig.trusted_publishers_path)",
+    "during update import to verify the signing certificate beyond the Windows trust store.",
+    "",
+    "Format: a JSON array of objects, each with a 'thumbprint' (SHA-256 hex, colon-separated)",
+    "and a 'subject' (human-readable label for log messages).",
+    "Example entry: {\"thumbprint\": \"AA:BB:CC:DD:...\", \"subject\": \"ShelterOps Signing Cert\"}",
+    "",
+    "DEPLOYMENT PREREQUISITE: this list ships intentionally empty.",
+    "An empty list causes all update imports to fail signature verification, which is the",
+    "safe default — no unsigned or unrecognised packages can be installed.",
+    "Before deploying to production, add the SHA-256 thumbprint of your Authenticode",
+    "code-signing certificate here.",
+    "To obtain the thumbprint:",
+    "  certutil -hashfile ShelterOpsDesk-1.0.0.msi SHA256",
+    "  signtool verify /pa /v ShelterOpsDesk-1.0.0.msi",
+    "",
+    "SECURITY NOTE: this file is shipped with the installer and must not be writable",
+    "by unprivileged users after installation. The installer places it in the install",
+    "folder (Program Files) which is ACL-protected on Windows."
+  ],
+  "trusted_publishers": []
+}

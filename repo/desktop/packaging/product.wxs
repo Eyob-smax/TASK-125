@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  WiX 4 product definition for ShelterOps Desk Console.
+  Build with: wix build product.wxs -d Configuration=Release -o ShelterOpsDesk-1.0.0.msi
+  The installer is code-signed post-build; the application verifies the
+  signer thumbprint against trusted_publishers.json at update-import time.
+-->
+<Wix xmlns="http://wixtoolset.org/schemas/v4/wxs">
+
+  <?include version.wxi ?>
+
+  <Package
+      Name="$(var.ProductName)"
+      Manufacturer="$(var.Manufacturer)"
+      Version="$(var.ProductVersion)"
+      UpgradeCode="$(var.UpgradeCode)"
+      Language="1033"
+      InstallerVersion="500">
+
+    <SummaryInformation
+        Keywords="shelter operations kennel inventory offline desktop"
+        Description="$(var.ProductName) — offline shelter desk operations" />
+
+    <MajorUpgrade
+        AllowSameVersionUpgrades="no"
+        DowngradeErrorMessage="A newer version of $(var.ProductName) is already installed." />
+
+    <MediaTemplate EmbedCab="yes" CompressionLevel="high" />
+
+    <!-- Install directory -->
+    <StandardDirectory Id="ProgramFiles6432Folder">
+      <Directory Id="INSTALLFOLDER" Name="$(var.ProductName)" />
+    </StandardDirectory>
+
+    <!-- Start-menu shortcut folder -->
+    <StandardDirectory Id="ProgramMenuFolder">
+      <Directory Id="ApplicationProgramsFolder" Name="$(var.ProductName)" />
+    </StandardDirectory>
+
+    <Feature Id="Core" Title="$(var.ProductName)" Level="1">
+      <ComponentGroupRef Id="BinaryComponents" />
+      <ComponentGroupRef Id="RuntimeComponents" />
+      <ComponentGroupRef Id="ShortcutComponents" />
+    </Feature>
+
+    <Property Id="WIXUI_INSTALLDIR" Value="INSTALLFOLDER" />
+    <UIRef Id="WixUI_InstallDir" />
+    <UIRef Id="WixUI_ErrorProgressText" />
+
+  </Package>
+
+  <!--
+    BinaryComponents: main application executable installed into INSTALLFOLDER.
+    Source path is relative to the packaging directory at build time; adjust
+    the Configuration variable if building Debug rather than Release.
+  -->
+  <Fragment>
+    <ComponentGroup Id="BinaryComponents" Directory="INSTALLFOLDER">
+      <Component Id="MainExecutable" Guid="A1B2C3D4-E5F6-7890-ABCD-EF1234567890">
+        <File Id="ShelterOpsDeskExe"
+              Name="ShelterOpsDesk.exe"
+              Source="..\..\build\Release\ShelterOpsDesk.exe"
+              KeyPath="yes" />
+      </Component>
+    </ComponentGroup>
+  </Fragment>
+
+  <!--
+    RuntimeComponents: supporting data files deployed alongside the executable.
+    trusted_publishers.json ships with the installer so the application can
+    verify future update imports against the pinned thumbprint list.
+  -->
+  <Fragment>
+    <ComponentGroup Id="RuntimeComponents" Directory="INSTALLFOLDER">
+      <Component Id="TrustedPublishersConfig" Guid="B2C3D4E5-F6A7-8901-BCDE-F12345678901">
+        <File Id="TrustedPublishersJson"
+              Name="trusted_publishers.json"
+              Source="trusted_publishers.json"
+              KeyPath="yes" />
+      </Component>
+    </ComponentGroup>
+  </Fragment>
+
+  <!--
+    ShortcutComponents: Start Menu shortcut for the installed application.
+    The RegistryValue element provides the required KeyPath for the component.
+  -->
+  <Fragment>
+    <ComponentGroup Id="ShortcutComponents" Directory="ApplicationProgramsFolder">
+      <Component Id="StartMenuShortcutComponent" Guid="C3D4E5F6-A7B8-9012-CDEF-123456789012">
+        <Shortcut Id="StartMenuShortcut"
+                  Name="$(var.ProductName)"
+                  Target="[INSTALLFOLDER]ShelterOpsDesk.exe"
+                  WorkingDirectory="INSTALLFOLDER"
+                  Description="$(var.ProductName) — offline shelter desk operations" />
+        <RemoveFolder Id="CleanupApplicationProgramsFolder"
+                      Directory="ApplicationProgramsFolder"
+                      On="uninstall" />
+        <RegistryValue Root="HKCU"
+                       Key="Software\$(var.Manufacturer)\DeskConsole"
+                       Name="StartMenuInstalled"
+                       Type="integer"
+                       Value="1"
+                       KeyPath="yes" />
+      </Component>
+    </ComponentGroup>
+  </Fragment>
+
+</Wix>

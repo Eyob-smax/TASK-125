@@ -1,0 +1,39 @@
+version: "3.9"
+
+# ShelterOps Desk Console — Container orchestration for build and test
+#
+# Services:
+#   build  — compiles shelterops_lib and test binaries (no GUI)
+#   test   — runs CTest suite inside the build environment
+#
+# The native Win32/DX11 GUI cannot run in these containers.
+# Live GUI verification requires native Windows 11 execution.
+#
+# Usage:
+#   docker compose run --rm build    # compile only
+#   docker compose run --rm test     # compile + run all tests
+
+services:
+
+  build:
+    build:
+      context: ./desktop
+      dockerfile: Dockerfile
+      target: build
+    volumes:
+      - build-cache:/workspace/desktop/build
+    working_dir: /workspace/desktop
+
+  test:
+    build:
+      context: ./desktop
+      dockerfile: Dockerfile
+      target: test
+    environment:
+      CTEST_EXTRA_ARGS: "${CTEST_EXTRA_ARGS:---output-on-failure --timeout 60}"
+    volumes:
+      - build-cache:/workspace/desktop/build
+    working_dir: /workspace/desktop
+
+volumes:
+  build-cache:

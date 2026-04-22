@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Include xmlns="http://wixtoolset.org/schemas/v4/wxs">
+  <?define ProductVersion  = "1.0.0" ?>
+  <?define ProductName     = "ShelterOps Desk Console" ?>
+  <?define Manufacturer    = "ShelterOps" ?>
+  <?define UpgradeCode     = "B4E3A1F2-7C8D-4E9A-B0F1-2D3E4F5A6B7C" ?>
+</Include>

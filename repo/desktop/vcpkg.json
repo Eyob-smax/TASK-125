@@ -1,0 +1,21 @@
+{
+  "name": "shelterops-desk",
+  "version": "1.0.0",
+  "description": "ShelterOps Desk Console - offline shelter operations",
+  "dependencies": [
+    {
+      "name": "imgui",
+      "features": ["docking-experimental", "dx11-binding", "win32-binding"],
+      "platform": "windows"
+    },
+    {
+      "name": "implot",
+      "platform": "windows"
+    },
+    "sqlite3",
+    "spdlog",
+    "nlohmann-json",
+    "libsodium",
+    "gtest"
+  ]
+}
